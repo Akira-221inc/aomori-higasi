@@ -931,7 +931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ba961f891624e4695122170a1f1534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterSpawner
-  waterPrefab: {fileID: 2666488291748646299, guid: 5e9d413b6ff361d42963ce9c4b38967e, type: 3}
+  waterPrefab: {fileID: 6567440892802084755, guid: 9e74c38e2514da94c90be3d0419be8c4, type: 3}
   spawnInterval: 0.001
 --- !u!4 &1958325186
 Transform:
