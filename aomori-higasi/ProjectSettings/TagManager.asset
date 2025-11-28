@@ -6,6 +6,8 @@ TagManager:
   tags:
   - FuelStream
   - EngineHole
+  - Target
+  - Water
   layers:
   - Default
   - TransparentFX
