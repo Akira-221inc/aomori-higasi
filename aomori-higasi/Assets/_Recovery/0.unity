@@ -218,11 +218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f047df3e94fd94a8991fe1dfc673cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FuelPour
-  fuelStream: {fileID: 1897921666}
-  mainCam: {fileID: 913768919}
+  fuelStream: {fileID: 0}
+  mainCam: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   holeLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -698,8 +698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f047df3e94fd94a8991fe1dfc673cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FuelPour
-  fuelStream: {fileID: 1897921666}
-  mainCam: {fileID: 913768919}
+  fuelStream: {fileID: 0}
+  mainCam: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -856,7 +856,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -912,7 +912,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
