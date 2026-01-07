@@ -8,6 +8,8 @@ TagManager:
   - EngineHole
   - Target
   - Water
+  - Fuelcube
+  - FuelCube
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - ItemOnly
+  - FuelCube
   - 
   - 
   - 
