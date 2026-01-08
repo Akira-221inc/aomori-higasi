@@ -10,6 +10,8 @@ TagManager:
   - Water
   - Fuelcube
   - FuelCube
+  - Meteor
+  - Engine
   layers:
   - Default
   - TransparentFX

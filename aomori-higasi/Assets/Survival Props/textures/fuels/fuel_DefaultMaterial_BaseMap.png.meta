@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 48959b5c4ab8bd24e81d49059d21a231
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312823
+  packageName: Survival Props Pack 1.0
+  packageVersion: 1.0
+  assetPath: Assets/Survival Props/textures/fuels/fuel_DefaultMaterial_BaseMap.png
+  uploadId: 738553
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -7,7 +14,7 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
-    sRGBTexture: 1
+    sRGBTexture: 0
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -115,10 +122,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 312823
-  packageName: Survival Props Pack 1.0
-  packageVersion: 1.0
-  assetPath: Assets/Survival Props/textures/fuels/fuel_DefaultMaterial_BaseMap.png
-  uploadId: 738553
