@@ -8,6 +8,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/HONBAN/1-Start/Start.unity
+    guid: de519339f96d56247aafe04c5afa6372
+  - enabled: 1
+    path: Assets/HONBAN/2-Movie01/Movie01.unity
+    guid: 8bf06bc65bb692a44a3c80cb83581c22
+  - enabled: 1
+    path: Assets/HONBAN/3-MainGame/MainGame.unity
+    guid: 34178e58c44e652419ccaf9e7a2b9b0a
+  - enabled: 1
+    path: Assets/HONBAN/10-Result/Result.unity
+    guid: e03c4033b82f91d4a8eb0e117ec21c25
+  - enabled: 1
+    path: Assets/HONBAN/11-Movie02/Movie02.unity
+    guid: c285f11479350e84f8d1c32aa215108d
+  - enabled: 1
+    path: Assets/HONBAN/12-End/End.unity
+    guid: f86ede182abacc949b2f571f0e35c427
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
