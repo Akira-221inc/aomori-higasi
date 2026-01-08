@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 341623093}
   - component: {fileID: 341623092}
   - component: {fileID: 341623091}
+  - component: {fileID: 341623094}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -528,6 +529,152 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &341623094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341623090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca04c5fe3c77604a91dfbec0f13d42b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  fuelAmount: 0
+  maxFuel: 100
+  gameClearUI: {fileID: 1701867691}
+  fuelSlider: {fileID: 1109764907}
+  fuelText: {fileID: 341623091}
+--- !u!1 &371590466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371590467}
+  - component: {fileID: 371590471}
+  - component: {fileID: 371590470}
+  - component: {fileID: 371590469}
+  - component: {fileID: 371590468}
+  m_Layer: 0
+  m_Name: EngineHole2
+  m_TagString: EngineHole
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &371590467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371590466}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.90759057, y: -0.31092417, z: 0.24141242, w: 0.14603311}
+  m_LocalPosition: {x: 0.33700013, y: 1.8499999, z: 0.42208007}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1823690740}
+  m_LocalEulerAnglesHint: {x: 24.532, y: -202.449, z: -147.12}
+--- !u!114 &371590468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371590466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f25c259b8e1814e89c4c95ad7bce1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EngineHoleFuelReceiver
+  gameManager: {fileID: 1526063980}
+  tickInterval: 0.1
+  amountPerTick: 1
+  fuelCubeTag: FuelCube
+  hitGracePeriod: 0.15
+--- !u!135 &371590469
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371590466}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &371590470
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371590466}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 160d7629ec2cfa847bcd1c5172cf0449, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &371590471
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371590466}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &430444479
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +687,7 @@ GameObject:
   - component: {fileID: 430444482}
   - component: {fileID: 430444481}
   - component: {fileID: 430444483}
+  - component: {fileID: 430444484}
   m_Layer: 3
   m_Name: EngineHole
   m_TagString: EngineHole
@@ -555,12 +703,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430444479}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.53, z: -0.08}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09, y: 0.59400004, z: -0.069}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1823690740}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &430444481
 MonoBehaviour:
@@ -616,10 +764,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f25c259b8e1814e89c4c95ad7bce1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EngineHoleFuelReceiver
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 1526063980}
   tickInterval: 0.1
   amountPerTick: 1
+  fuelCubeTag: FuelCube
   hitGracePeriod: 0.15
+--- !u!54 &430444484
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430444479}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &529864015
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +1034,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 864910021}
   m_CullTransparentMesh: 1
+--- !u!1 &891876264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 891876266}
+  - component: {fileID: 891876265}
+  m_Layer: 0
+  m_Name: FuelCubeSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &891876265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891876264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9652a8964dae845838f46ee00bbb03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelCubeSpawner
+  fuelCubePrefab: {fileID: 7925590176697357528, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+  spawnAtCursor: 1
+  spawnOffsetFromSurface: 0.3
+  defaultSpawnDistance: 5
+  spawnPoint: {fileID: 891876266}
+  initialVelocity: {x: 0, y: -0.5, z: 0}
+  forwardVelocity: 1
+  useShowerEffect: 1
+  showerSpreadRadius: 3
+  velocityVariance: {x: 1, y: 0.5, z: 1}
+  cubeLifetime: 5
+  mouseButton: 0
+  clickTargetTag: 
+  spawnInterval: 0.05
+--- !u!4 &891876266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891876264}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.02, y: 0.93, z: 1.24}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &913768917
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,6 +1239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109764906}
   - component: {fileID: 1109764907}
+  - component: {fileID: 1109764908}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1085,6 +1320,23 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1109764908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109764905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca04c5fe3c77604a91dfbec0f13d42b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  fuelAmount: 0
+  maxFuel: 100
+  gameClearUI: {fileID: 1701867691}
+  fuelSlider: {fileID: 1109764907}
+  fuelText: {fileID: 341623091}
 --- !u!1 &1201020714
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,6 +1518,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   tickInterval: 0.1
   amountPerTick: 1
+  fuelCubeTag: FuelCube
   hitGracePeriod: 0.15
 --- !u!1 &1701867691
 GameObject:
@@ -1583,11 +1836,11 @@ Transform:
   m_GameObject: {fileID: 1823690736}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 430444480}
+  - {fileID: 371590467}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1897921665
@@ -1601,6 +1854,7 @@ GameObject:
   - component: {fileID: 1897921668}
   - component: {fileID: 1897921666}
   - component: {fileID: 1897921667}
+  - component: {fileID: 1897921669}
   m_Layer: 0
   m_Name: FuelStream
   m_TagString: Untagged
@@ -6426,6 +6680,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 773535}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &1897921669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897921665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76e553c026bd7149b3a7b846e37cf18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParticleFuelForwarder
 --- !u!1 &2038880252
 GameObject:
   m_ObjectHideFlags: 0
@@ -6501,6 +6767,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038880252}
   m_CullTransparentMesh: 1
+--- !u!1001 &7195649526312407519
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.11817744
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.8662791
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.17945682
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.4509877
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -2.458
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -235.54199
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 564.702
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362078445296811371, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7925590176697357528, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_Name
+      value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 7925590176697357528, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
+      propertyPath: m_TagString
+      value: FuelCube
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 977e440c63dbf864298860b9cdbebc8e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6512,3 +6855,6 @@ SceneRoots:
   - {fileID: 773535}
   - {fileID: 1526063981}
   - {fileID: 67605112}
+  - {fileID: 7195649526312407519}
+  - {fileID: 430444480}
+  - {fileID: 891876266}
