@@ -24,6 +24,13 @@ public class CableManager3D : MonoBehaviour {
     public bool keepScreenThickness = true;    // 開始地点の見た目太さを維持する
     public bool roundCaps = true;              // 丸キャップで太い線を綺麗に
 
+    // ★追加：接続SE
+    [Header("SFX")]
+    public AudioSource connectAudio;           // ここにAudioSourceを入れる（未設定なら自分から探す）
+    public AudioClip connectClip;              // 接続SE
+    [Range(0f, 1f)] public float connectVolume = 1f;
+    public bool playAtPoint3D = false;         // trueなら接続地点で3D再生（AudioSource不要）
+
     [System.Serializable]
     public class Connection {
         public CableSocket3D left, right;
@@ -46,6 +53,9 @@ public class CableManager3D : MonoBehaviour {
         cam = Camera.main ?? Object.FindObjectOfType<Camera>();
 #endif
         if (socketMask == 0) socketMask = ~0; // 未設定なら全レイヤー
+
+        // ★追加：AudioSource自動取得（同じGameObjectについてる想定）
+        if (connectAudio == null) connectAudio = GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -153,6 +163,10 @@ public class CableManager3D : MonoBehaviour {
             });
 
             if (verboseLog) Debug.Log($"✅ Connected {draggingFrom.color}: {draggingFrom.name} -> {final.name}");
+
+            // ★追加：接続確定の瞬間だけSE再生（ここで1回だけ鳴る）
+            PlayConnectSfx(final.transform.position);
+
             CheckClear();
         } else {
             if (verboseLog) {
@@ -227,6 +241,28 @@ public class CableManager3D : MonoBehaviour {
         // 端ごとに太さを設定（間は補間される）
         lr.startWidth = w0;
         lr.endWidth   = w1;
+    }
+
+    // ★追加：接続SE再生（okのときにだけ呼ばれる）
+    void PlayConnectSfx(Vector3 pos)
+    {
+        // どっちも無いなら何もしない
+        if (connectClip == null && connectAudio == null) return;
+
+        // 接続地点で3D再生したい場合（AudioSource不要）
+        if (playAtPoint3D && connectClip != null)
+        {
+            AudioSource.PlayClipAtPoint(connectClip, pos, connectVolume);
+            return;
+        }
+
+        // AudioSourceで再生（2D/3DどっちでもOK）
+        if (connectAudio == null) return;
+
+        if (connectClip != null)
+            connectAudio.PlayOneShot(connectClip, connectVolume);
+        else
+            connectAudio.Play();
     }
 
     public void ResetAll() {
