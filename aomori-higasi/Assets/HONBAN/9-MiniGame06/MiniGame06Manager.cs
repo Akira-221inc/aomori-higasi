@@ -5,10 +5,20 @@ public class MiniGame06Manager : MonoBehaviour
     public Medicine[] medicines;
     public string correctId;
 
+    [Header("SE")]
+    public AudioSource audioSource;
+    public AudioClip clickSE;
+    public AudioClip successSE;
+    public AudioClip failSE;
+
     int index = 0;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
         UpdateView();
     }
 
@@ -26,6 +36,7 @@ public class MiniGame06Manager : MonoBehaviour
                 var button = hit.collider.GetComponent<Button3D>();
                 if (button != null)
                 {
+                    PlaySE(clickSE);   // ← ボタン押下音
                     OnButtonPressed(button.type);
                 }
             }
@@ -75,8 +86,20 @@ public class MiniGame06Manager : MonoBehaviour
         Debug.Log("現在: " + medicines[index].medicineId);
 
         if (medicines[index].medicineId == correctId)
+        {
             Debug.Log("成功！");
+            PlaySE(successSE);
+        }
         else
+        {
             Debug.Log("失敗");
+            PlaySE(failSE);
+        }
+    }
+
+    void PlaySE(AudioClip clip)
+    {
+        if (clip != null)
+            audioSource.PlayOneShot(clip);
     }
 }
