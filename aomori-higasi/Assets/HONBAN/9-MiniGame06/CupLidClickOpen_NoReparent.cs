@@ -4,25 +4,36 @@ using UnityEngine;
 public class CupLidClickOpen_NoReparent : MonoBehaviour
 {
     public Camera cam;                 // Rayを飛ばすカメラ
-    public Transform pivot;            // 回転中心（あなたのpivot）
-    public Transform lid;              // 回す対象（あなたのCaseTop）
-    public Collider lidCollider;       // クリック対象（CaseTopのCollider）
+    public Transform pivot;            // 回転中心
+    public Transform lid;              // フタ本体
+    public Collider lidCollider;       // クリック対象
 
-    // pivotを基準にした「閉→開」の回転角（ローカルっぽく考えてOK）
+    [Header("Rotation")]
     public Vector3 closedEuler = new Vector3(0, 0, 0);
     public Vector3 openEuler   = new Vector3(-90f, 0, 0);
     public float animTime = 0.25f;
 
+    [Header("Sound")]
+    public AudioSource audioSource;
+    public AudioClip openSE;
+
     bool isOpen = false;
     bool isAnimating = false;
 
-    // アニメ用：閉状態の基準姿勢（pivot基準）
     Quaternion closedRotRel;
     Vector3 closedPosRel;
 
     void Start()
     {
         if (cam == null) cam = Camera.main;
+
+        // AudioSource 自動取得（なければ追加）
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+                audioSource = gameObject.AddComponent<AudioSource>();
+        }
 
         if (pivot == null || lid == null)
         {
@@ -31,8 +42,7 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
             return;
         }
 
-        // 現在の姿勢を「閉状態」として保存
-        // pivot空間での相対位置・相対回転を覚える
+        // 現在の姿勢を閉状態として保存
         closedPosRel = pivot.InverseTransformPoint(lid.position);
         closedRotRel = Quaternion.Inverse(pivot.rotation) * lid.rotation;
     }
@@ -49,6 +59,10 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
             {
                 if (hit.collider == lidCollider)
                 {
+                    // 開くときだけ効果音
+                    if (!isOpen)
+                        PlaySE(openSE);
+
                     StartCoroutine(AnimateLid(!isOpen));
                 }
             }
@@ -59,18 +73,21 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
     {
         isAnimating = true;
 
-        // 開閉の目標相対回転（pivot基準）
         Quaternion fromRel = Quaternion.Inverse(pivot.rotation) * lid.rotation;
-        Quaternion toRel = Quaternion.Euler(open ? openEuler : closedEuler) * closedRotRel;
+        Quaternion toRel =
+            Quaternion.Euler(open ? openEuler : closedEuler) * closedRotRel;
 
         float t = 0f;
         while (t < 1f)
         {
             t += Time.deltaTime / Mathf.Max(0.0001f, animTime);
 
-            Quaternion rel = Quaternion.Slerp(fromRel, toRel, Mathf.SmoothStep(0f, 1f, t));
+            Quaternion rel = Quaternion.Slerp(
+                fromRel,
+                toRel,
+                Mathf.SmoothStep(0f, 1f, t)
+            );
 
-            // pivotを基準に、相対姿勢→ワールドへ戻す
             lid.rotation = pivot.rotation * rel;
             lid.position = pivot.TransformPoint(closedPosRel);
 
@@ -82,5 +99,11 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
 
         isOpen = open;
         isAnimating = false;
+    }
+
+    void PlaySE(AudioClip clip)
+    {
+        if (clip == null || audioSource == null) return;
+        audioSource.PlayOneShot(clip);
     }
 }

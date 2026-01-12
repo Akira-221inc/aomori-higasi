@@ -2627,6 +2627,8 @@ MonoBehaviour:
   closedEuler: {x: 0, y: 0, z: 0}
   openEuler: {x: 90, y: 0, z: 0}
   animTime: 0.25
+  audioSource: {fileID: 0}
+  openSE: {fileID: 8300000, guid: 229d20dabe5316d4881820ddf69a3ea4, type: 3}
 --- !u!65 &1433492149
 BoxCollider:
   m_ObjectHideFlags: 0
