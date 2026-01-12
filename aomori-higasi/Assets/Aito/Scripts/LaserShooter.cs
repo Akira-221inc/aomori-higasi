@@ -3,6 +3,7 @@ using UnityEngine;
 public class LaserShooter : MonoBehaviour
 {
     public LineRenderer lineRenderer;
+    public AudioClip explosionSE;  
 
     void Update()
     {
@@ -12,31 +13,34 @@ public class LaserShooter : MonoBehaviour
         }
     }
 
-    void ShootLaser()
-{
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-    // デバッグ用：Sceneビューで確認
-    Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, 1f);
-
-    lineRenderer.enabled = true;
-
-    // ★ Inspector の Positions は完全無視される
-    lineRenderer.SetPosition(0, ray.origin);
-    lineRenderer.SetPosition(1, ray.origin + ray.direction * 50f);
-
-    RaycastHit hit;
-    if (Physics.Raycast(ray, out hit, 50f))
+   void ShootLaser()
     {
-        if (hit.collider.CompareTag("Meteor"))
-        {
-            Destroy(hit.collider.gameObject);
-            GameManagershot.Instance.AddScore();
-        }
-    }
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-    Invoke(nameof(HideLaser), 0.05f);
-}
+        Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, 1f);
+
+        lineRenderer.enabled = true;
+        lineRenderer.SetPosition(0, ray.origin);
+        lineRenderer.SetPosition(1, ray.origin + ray.direction * 50f);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 50f))
+        {
+            if (hit.collider.CompareTag("Meteor"))
+            {
+                // 💥 爆発音
+                AudioSource.PlayClipAtPoint(
+                    explosionSE,
+                    hit.collider.transform.position
+                );
+
+                Destroy(hit.collider.gameObject);
+                GameManagershot.Instance.AddScore();
+            }
+        }
+
+        Invoke(nameof(HideLaser), 0.05f);
+    }
 
     void HideLaser()
     {

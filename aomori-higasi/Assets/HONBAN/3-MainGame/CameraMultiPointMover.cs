@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CameraMultiPointMover : MonoBehaviour
 {
@@ -8,23 +9,27 @@ public class CameraMultiPointMover : MonoBehaviour
     public List<Transform> points = new List<Transform>();
 
     [Header("Timing")]
-    public float moveDuration = 2.0f;     // 1点あたりの移動時間
-    public float waitAtPoint = 0.3f;      // 到着後の待機
+    public float moveDuration = 2.0f;
+    public float waitAtPoint = 0.3f;
 
     [Header("Options")]
-    public bool moveRotation = true;      // 回転も合わせる
-    public bool playOnStart = true;       // Startで自動再生
-    public bool loop = false;             // 最後まで行ったらループ
+    public bool moveRotation = true;
+    public bool playOnStart = true;
+    public bool loop = false;
 
     [Header("Easing")]
     public AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [Header("Events")]
+    public UnityEvent<int> onArrivePoint; // ★ 到達通知
 
     int index = 0;
     Coroutine seqCo;
 
     void Start()
     {
-        if (playOnStart) StartSequence(fromIndex: 0);
+        if (playOnStart)
+            StartSequence(0);
     }
 
     // -------------------------
@@ -33,15 +38,19 @@ public class CameraMultiPointMover : MonoBehaviour
     public void StartSequence(int fromIndex = 0)
     {
         if (points == null || points.Count == 0)
-        {
-            Debug.LogWarning("[CameraMultiPointMover] points が空です");
             return;
-        }
 
         index = Mathf.Clamp(fromIndex, 0, points.Count - 1);
 
-        if (seqCo != null) StopCoroutine(seqCo);
+        if (seqCo != null)
+            StopCoroutine(seqCo);
+
         seqCo = StartCoroutine(SequenceCoroutine());
+    }
+
+    public void ResumeFrom(int fromIndex)
+    {
+        StartSequence(fromIndex);
     }
 
     public void StopSequence()
@@ -53,32 +62,6 @@ public class CameraMultiPointMover : MonoBehaviour
         }
     }
 
-    public void GoTo(int targetIndex)
-    {
-        if (points == null || points.Count == 0) return;
-        targetIndex = Mathf.Clamp(targetIndex, 0, points.Count - 1);
-
-        index = targetIndex;
-
-        if (seqCo != null) StopCoroutine(seqCo);
-        seqCo = StartCoroutine(MoveTo(points[index]));
-    }
-
-    public void Next()
-    {
-        if (points == null || points.Count == 0) return;
-
-        index++;
-        if (index >= points.Count)
-        {
-            if (loop) index = 0;
-            else { StopSequence(); return; }
-        }
-
-        if (seqCo != null) StopCoroutine(seqCo);
-        seqCo = StartCoroutine(MoveTo(points[index]));
-    }
-
     // -------------------------
     // 内部処理
     // -------------------------
@@ -87,7 +70,9 @@ public class CameraMultiPointMover : MonoBehaviour
         while (true)
         {
             yield return MoveTo(points[index]);
-            if (waitAtPoint > 0f) yield return new WaitForSeconds(waitAtPoint);
+
+            if (waitAtPoint > 0f)
+                yield return new WaitForSeconds(waitAtPoint);
 
             index++;
             if (index >= points.Count)
@@ -125,8 +110,10 @@ public class CameraMultiPointMover : MonoBehaviour
             yield return null;
         }
 
-        // 最後に誤差を潰す
         transform.position = endPos;
         if (moveRotation) transform.rotation = endRot;
+
+        // ★ 到達イベント
+        onArrivePoint?.Invoke(index);
     }
 }
