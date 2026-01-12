@@ -8,7 +8,7 @@ public class RotatableTile : TileBase
     [Header("SFX")]
     [SerializeField] private AudioSource sfxSource;   // ここにAudioSource（無ければ自動取得）
     [SerializeField] private AudioClip rotateClip;    // 回転SE
-    [Range(0f, 1f)]
+    [Range(0f, 10f)]
     [SerializeField] private float volume = 1f;
 
     void Awake()

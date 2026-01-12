@@ -3187,6 +3187,8 @@ MonoBehaviour:
   - {fileID: 1107421896}
   successSE: {fileID: 8300000, guid: 6df32cc0bba28954e91f5296240a2d66, type: 3}
   failSE: {fileID: 8300000, guid: 730ed4dbd49ac1c4cb2b7051d53520a7, type: 3}
+  successSEVolume: 3
+  failSEVolume: 3
   miniGameExit: {fileID: 771571330}
   clearDelay: 1
 --- !u!4 &1812664169

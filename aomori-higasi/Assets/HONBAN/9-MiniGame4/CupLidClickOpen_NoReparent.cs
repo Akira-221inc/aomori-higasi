@@ -16,6 +16,8 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
     [Header("Sound")]
     public AudioSource audioSource;
     public AudioClip openSE;
+    [Range(0f, 10f)]
+    public float openSEVolume = 1.0f; // ★ 効果音の倍率
 
     bool isOpen = false;
     bool isAnimating = false;
@@ -61,7 +63,7 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
                 {
                     // 開くときだけ効果音
                     if (!isOpen)
-                        PlaySE(openSE);
+                        PlaySE(openSE, openSEVolume);
 
                     StartCoroutine(AnimateLid(!isOpen));
                 }
@@ -101,9 +103,10 @@ public class CupLidClickOpen_NoReparent : MonoBehaviour
         isAnimating = false;
     }
 
-    void PlaySE(AudioClip clip)
+    // ★ 音量倍率付きで再生
+    void PlaySE(AudioClip clip, float volume = 1.0f)
     {
         if (clip == null || audioSource == null) return;
-        audioSource.PlayOneShot(clip);
+        audioSource.PlayOneShot(clip, volume);
     }
 }
