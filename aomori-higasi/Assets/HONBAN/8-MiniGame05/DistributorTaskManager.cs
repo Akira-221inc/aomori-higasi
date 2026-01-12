@@ -3,11 +3,29 @@ using UnityEngine;
 public class DistributorTaskManager : MonoBehaviour
 {
     public DistributorDial[] dials;
-    int currentIndex = 0;
+
+    [Header("Dial Lamps (順番一致)")]
+    public DialLamp[] lamps;
+
+    [Header("SE")]
+    public AudioClip successSE;
+    public AudioClip failSE;
+
+    private AudioSource audioSource;
+    private int currentIndex = 0;
 
     void Start()
     {
         ActivateCurrentDial();
+
+        // AudioSource 取得
+        audioSource = GetComponent<AudioSource>();
+
+        // 起動時は全ランプ通常色
+        for (int i = 0; i < lamps.Length; i++)
+        {
+            lamps[i].SetNormal();
+        }
     }
 
     void ActivateCurrentDial()
@@ -26,6 +44,18 @@ public class DistributorTaskManager : MonoBehaviour
 
         if (success)
         {
+            // 🔊 成功音
+            if (successSE != null)
+            {
+                audioSource.PlayOneShot(successSE);
+            }
+
+            // 💡 対応ランプを成功色
+            if (currentIndex < lamps.Length)
+            {
+                lamps[currentIndex].SetSuccess();
+            }
+
             currentIndex++;
 
             if (currentIndex >= dials.Length)
@@ -35,6 +65,14 @@ public class DistributorTaskManager : MonoBehaviour
             else
             {
                 ActivateCurrentDial();
+            }
+        }
+        else
+        {
+            // 🔊 失敗音
+            if (failSE != null)
+            {
+                audioSource.PlayOneShot(failSE);
             }
         }
     }
