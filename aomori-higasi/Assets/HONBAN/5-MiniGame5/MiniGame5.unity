@@ -693,6 +693,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1124931881171641459, guid: a271483ccdb27da4a8195ea56a19051a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: aa0b0383c30d5854288bf274b794108b, type: 2}
     - target: {fileID: 1638523705553120504, guid: a271483ccdb27da4a8195ea56a19051a, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -745,6 +749,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile_LED
       objectReference: {fileID: 0}
+    - target: {fileID: 8639181382884025538, guid: a271483ccdb27da4a8195ea56a19051a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c62fddb688c9c9f489ea86654c088640, type: 2}
     - target: {fileID: 9008199434553567892, guid: a271483ccdb27da4a8195ea56a19051a, type: 3}
       propertyPath: connections
       value: 10
@@ -1687,6 +1695,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1917292133935672937, guid: 4ffbbcab3272c5348a662acd7628e61c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f74443869bedbb49a31ad0c394157ef, type: 2}
     - target: {fileID: 3726262930130479610, guid: 4ffbbcab3272c5348a662acd7628e61c, type: 3}
       propertyPath: m_Name
       value: Tile_Source (1)
