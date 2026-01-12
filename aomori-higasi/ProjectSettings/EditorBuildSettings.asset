@@ -18,22 +18,22 @@ EditorBuildSettings:
     path: Assets/HONBAN/3-MainGame/MainGame.unity
     guid: 34178e58c44e652419ccaf9e7a2b9b0a
   - enabled: 1
-    path: Assets/HONBAN/4-MiniGame01/MiniGame1.unity
+    path: Assets/HONBAN/4-MiniGame1/MiniGame1.unity
     guid: 34a4915fa6fd4734898c716066291096
   - enabled: 1
-    path: Assets/HONBAN/6-MiniGame03/MiniGame2.unity
+    path: Assets/HONBAN/6-MiniGame2/MiniGame2.unity
     guid: 9c9223e22dbb7874e8b37561a47f2e0d
   - enabled: 1
-    path: Assets/HONBAN/8-MiniGame05/MiniGame3.unity
+    path: Assets/HONBAN/8-MiniGame3/MiniGame3.unity
     guid: 8fb01bd69c7b3ec4391ba5b61136b0a7
   - enabled: 1
-    path: Assets/HONBAN/9-MiniGame06/MiniGame4.unity
+    path: Assets/HONBAN/9-MiniGame4/MiniGame4.unity
     guid: d3f8f0b014ea3a54b8b9da6637a60877
   - enabled: 1
-    path: Assets/HONBAN/5-MiniGame02/MiniGame5.unity
+    path: Assets/HONBAN/5-MiniGame5/MiniGame5.unity
     guid: f01eeb05133f4f24c927617e4b0fc9d3
   - enabled: 1
-    path: Assets/HONBAN/7-MiniGame04/MiniGame6.unity
+    path: Assets/HONBAN/7-MiniGame6/MiniGame6.unity
     guid: e5fa414dca60975438371923d300865e
   - enabled: 1
     path: Assets/HONBAN/10-Result/Result.unity

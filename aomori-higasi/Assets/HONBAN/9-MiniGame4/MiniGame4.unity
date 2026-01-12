@@ -1434,6 +1434,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  onArrivePoint:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &626739147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1700,6 +1703,8 @@ MonoBehaviour:
   clickSE: {fileID: 8300000, guid: 7e22fbed0a6d2e54ba1ad6e62b69e7d8, type: 3}
   successSE: {fileID: 8300000, guid: 6df32cc0bba28954e91f5296240a2d66, type: 3}
   failSE: {fileID: 8300000, guid: 730ed4dbd49ac1c4cb2b7051d53520a7, type: 3}
+  nextSceneName: MainGame
+  clearDelay: 1
 --- !u!82 &815055033
 AudioSource:
   m_ObjectHideFlags: 0

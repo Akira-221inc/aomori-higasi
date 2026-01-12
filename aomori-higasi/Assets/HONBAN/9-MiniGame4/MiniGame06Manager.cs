@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MiniGame06Manager : MonoBehaviour
 {
@@ -11,7 +13,12 @@ public class MiniGame06Manager : MonoBehaviour
     public AudioClip successSE;
     public AudioClip failSE;
 
+    [Header("Clear")]
+    public string nextSceneName = "HubScene";
+    public float clearDelay = 1.0f;
+
     int index = 0;
+    bool isCleared = false;   // ★ 多重クリア防止
 
     void Start()
     {
@@ -24,6 +31,8 @@ public class MiniGame06Manager : MonoBehaviour
 
     void Update()
     {
+        if (isCleared) return; // ★ クリア後は操作無効
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -36,7 +45,7 @@ public class MiniGame06Manager : MonoBehaviour
                 var button = hit.collider.GetComponent<Button3D>();
                 if (button != null)
                 {
-                    PlaySE(clickSE);   // ← ボタン押下音
+                    PlaySE(clickSE);
                     OnButtonPressed(button.type);
                 }
             }
@@ -87,14 +96,35 @@ public class MiniGame06Manager : MonoBehaviour
 
         if (medicines[index].medicineId == correctId)
         {
-            Debug.Log("成功！");
+            Debug.Log("🎉 成功！");
             PlaySE(successSE);
+            GameClear();
         }
         else
         {
             Debug.Log("失敗");
             PlaySE(failSE);
         }
+    }
+
+    void GameClear()
+    {
+        if (isCleared) return;
+
+        isCleared = true;
+
+        // ★ ミニゲーム進行度を進める
+        MiniGameProgress.nextPointIndex++;
+        Debug.Log("MiniGameProgress.nextPointIndex = " + MiniGameProgress.nextPointIndex);
+
+        // ★ 少し待ってからシーン遷移
+        StartCoroutine(ClearAndMoveScene());
+    }
+
+    IEnumerator ClearAndMoveScene()
+    {
+        yield return new WaitForSeconds(clearDelay);
+        SceneManager.LoadScene(nextSceneName);
     }
 
     void PlaySE(AudioClip clip)

@@ -253,6 +253,8 @@ MonoBehaviour:
   score: 0
   clearCount: 10
   isGameClear: 0
+  nextSceneName: MainGame
+  clearDelay: 1
 --- !u!4 &426193473
 Transform:
   m_ObjectHideFlags: 0

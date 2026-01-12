@@ -3127,6 +3127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   winPanel: {fileID: 0}
+  nextSceneName: MainGame
+  clearDelay: 1
 --- !u!4 &1631266830
 Transform:
   m_ObjectHideFlags: 0
