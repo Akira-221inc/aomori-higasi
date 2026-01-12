@@ -459,39 +459,13 @@ MonoBehaviour:
   - {fileID: 1728788072}
   - {fileID: 1849577740}
   moveDuration: 2
-  waitAtPoint: 3
-  moveRotation: 1
-  playOnStart: 0
-  loop: 0
-  ease:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  pointDelays:
+  waitBeforeMove: 2
+  doorController: {fileID: 1349324361}
+  doorsToOpenAtPoints:
   - pointIndex: 1
-    delayTime: 2
-  - pointIndex: 4
-    delayTime: 2
+    doorIndices: 0000000001000000
+  - pointIndex: 5
+    doorIndices: 0200000003000000
   onArrivePoint:
     m_PersistentCalls:
       m_Calls: []
@@ -733,6 +707,10 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 152b77767de6d29489a169e9df052e72, type: 3}
       propertyPath: m_Name
       value: Shield
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 152b77767de6d29489a169e9df052e72, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1312,6 +1290,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1907267212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1145396314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 86141184763501777, guid: 022bea2bba50d7446beba5a0b86bb8c8, type: 3}
+  m_PrefabInstance: {fileID: 939274567}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1176861899 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2970177698412901809, guid: 022bea2bba50d7446beba5a0b86bb8c8, type: 3}
@@ -1474,7 +1457,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1907267212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1394613364
+--- !u!1 &1349324359
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1482,42 +1465,76 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1394613366}
-  - component: {fileID: 1394613365}
+  - component: {fileID: 1349324362}
+  - component: {fileID: 1349324361}
   m_Layer: 0
-  m_Name: 'CameraReturnManager '
+  m_Name: doorController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1394613365
+--- !u!114 &1349324361
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394613364}
+  m_GameObject: {fileID: 1349324359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a566d5f2c0cb88748900220e411c0a69, type: 3}
+  m_Script: {fileID: 11500000, guid: 81b97f8214eb04f4ea8d57e9cb16e34d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraReturnManager
---- !u!4 &1394613366
+  m_EditorClassIdentifier: Assembly-CSharp::AutoDoorController
+  doors:
+  - doorTransform: {fileID: 667664763}
+    moveDirection: {x: 0, y: -1, z: 0}
+    moveDistance: 0.5
+    moveDuration: 2
+    startPos: {x: 0, y: 0, z: 0}
+    isMoving: 0
+    elapsed: 0
+  - doorTransform: {fileID: 1945696724}
+    moveDirection: {x: 0, y: 1, z: 0}
+    moveDistance: 0.5
+    moveDuration: 2
+    startPos: {x: 0, y: 0, z: 0}
+    isMoving: 0
+    elapsed: 0
+  - doorTransform: {fileID: 1145396314}
+    moveDirection: {x: 0, y: 1, z: 0}
+    moveDistance: 0.5
+    moveDuration: 2
+    startPos: {x: 0, y: 0, z: 0}
+    isMoving: 0
+    elapsed: 0
+  - doorTransform: {fileID: 1426508788}
+    moveDirection: {x: 0, y: -1, z: 0}
+    moveDistance: 0.5
+    moveDuration: 2
+    startPos: {x: 0, y: 0, z: 0}
+    isMoving: 0
+    elapsed: 0
+--- !u!4 &1349324362
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394613364}
+  m_GameObject: {fileID: 1349324359}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.02933, y: 0.72883, z: 0.69846}
+  m_LocalPosition: {x: 0.19474, y: 0, z: 3.54653}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1426508788 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5777182667282571250, guid: 022bea2bba50d7446beba5a0b86bb8c8, type: 3}
+  m_PrefabInstance: {fileID: 939274567}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1614303719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,74 +1984,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -2858488494510464686, guid: 022bea2bba50d7446beba5a0b86bb8c8, type: 3}
   m_PrefabInstance: {fileID: 939274567}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1994307963
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1994307965}
-  - component: {fileID: 1994307964}
-  m_Layer: 0
-  m_Name: AutoDoorController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1994307964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994307963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81b97f8214eb04f4ea8d57e9cb16e34d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AutoDoorController
-  doors:
-  - doorTransform: {fileID: 1945696724}
-    moveDirection: {x: 0, y: 0.1054063, z: 0}
-    moveDistance: 1.5
-    startPosition: {x: 0, y: 0, z: 0}
-    movedDistance: 0
-  - doorTransform: {fileID: 667664763}
-    moveDirection: {x: 0, y: -0.1054063, z: 0}
-    moveDistance: 1.5
-    startPosition: {x: 0, y: 0, z: 0}
-    movedDistance: 0
-  moveSpeed: 0.2
---- !u!4 &1994307965
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994307963}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.02933, y: 0.72883, z: 0.69846}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 45709332}
   - {fileID: 133552455}
+  - {fileID: 1349324362}
   - {fileID: 939274567}
   - {fileID: 1907267212}
   - {fileID: 795398953}
   - {fileID: 213229627}
-  - {fileID: 1394613366}
   - {fileID: 1614303721}
   - {fileID: 9782046}
   - {fileID: 404099426}
-  - {fileID: 1994307965}
