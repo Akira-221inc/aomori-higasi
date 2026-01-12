@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public class DoorOpenAtPoint
+{
+    public int pointIndex;    // このポイントに到達する前にドアを開く
+    public int[] doorIndices; // AutoDoorController の doors 配列のインデックス
+}
+
 public class CameraMultiPointMover : MonoBehaviour
 {
-    [Header("Points (順番に移動)")]
+    [Header("Points")]
     public List<Transform> points = new List<Transform>();
 
-    [Header("Timing")]
-    public float moveDuration = 2.0f;
-    public float waitAtPoint = 0.3f;
-
-    [Header("Options")]
-    public bool moveRotation = true;
-    public bool playOnStart = true;
-    public bool loop = false;
-
-    [Header("Easing")]
-    public AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Header("Movement Settings")]
+    public float moveDuration = 2f;
+    public float waitBeforeMove = 2f;         // ドアが開く時間
+    public AutoDoorController doorController; // ドア制御
+    public DoorOpenAtPoint[] doorsToOpenAtPoints;
 
     [Header("Events")]
-    public UnityEvent<int> onArrivePoint; // ★ 到達通知
+    public UnityEvent<int> onArrivePoint;     // 移動完了イベント
 
-    int index = 0;
-    Coroutine seqCo;
+    private int index = 0;
+    private Coroutine moveCo = null;
 
     void Start()
     {
-        if (playOnStart)
-            StartSequence(0);
+        StartSequence(0);
     }
 
     // -------------------------
@@ -37,83 +37,69 @@ public class CameraMultiPointMover : MonoBehaviour
     // -------------------------
     public void StartSequence(int fromIndex = 0)
     {
-        if (points == null || points.Count == 0)
+        if (moveCo != null)
             return;
 
         index = Mathf.Clamp(fromIndex, 0, points.Count - 1);
-
-        if (seqCo != null)
-            StopCoroutine(seqCo);
-
-        seqCo = StartCoroutine(SequenceCoroutine());
+        moveCo = StartCoroutine(MoveSequence());
     }
 
     public void ResumeFrom(int fromIndex)
     {
-        StartSequence(fromIndex);
+        if (moveCo != null)
+            StopCoroutine(moveCo);
+
+        index = Mathf.Clamp(fromIndex, 0, points.Count - 1);
+        moveCo = StartCoroutine(MoveSequence());
     }
 
     public void StopSequence()
     {
-        if (seqCo != null)
+        if (moveCo != null)
         {
-            StopCoroutine(seqCo);
-            seqCo = null;
+            StopCoroutine(moveCo);
+            moveCo = null;
         }
     }
 
     // -------------------------
     // 内部処理
     // -------------------------
-    IEnumerator SequenceCoroutine()
+    private IEnumerator MoveSequence()
     {
-        while (true)
+        while (index < points.Count)
         {
-            yield return MoveTo(points[index]);
+            // ポイントに応じてドアを開く
+            foreach (var dto in doorsToOpenAtPoints)
+            {
+                if (dto.pointIndex == index && doorController != null)
+                {
+                    doorController.OpenDoors(dto.doorIndices);
+                    yield return new WaitForSeconds(waitBeforeMove);
+                }
+            }
 
-            if (waitAtPoint > 0f)
-                yield return new WaitForSeconds(waitAtPoint);
+            // ポイントまで移動
+            Transform target = points[index];
+            Vector3 startPos = transform.position;
+            float elapsed = 0f;
+
+            while (elapsed < moveDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / moveDuration);
+                transform.position = Vector3.Lerp(startPos, target.position, t);
+                yield return null;
+            }
+
+            transform.position = target.position;
+
+            // 移動完了イベント
+            onArrivePoint?.Invoke(index);
 
             index++;
-            if (index >= points.Count)
-            {
-                if (loop) index = 0;
-                else break;
-            }
         }
 
-        seqCo = null;
-    }
-
-    IEnumerator MoveTo(Transform target)
-    {
-        if (target == null) yield break;
-
-        Vector3 startPos = transform.position;
-        Quaternion startRot = transform.rotation;
-
-        Vector3 endPos = target.position;
-        Quaternion endRot = target.rotation;
-
-        float t = 0f;
-        float inv = (moveDuration <= 0.0001f) ? 99999f : 1f / moveDuration;
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime * inv;
-            float k = ease.Evaluate(Mathf.Clamp01(t));
-
-            transform.position = Vector3.Lerp(startPos, endPos, k);
-            if (moveRotation)
-                transform.rotation = Quaternion.Slerp(startRot, endRot, k);
-
-            yield return null;
-        }
-
-        transform.position = endPos;
-        if (moveRotation) transform.rotation = endRot;
-
-        // ★ 到達イベント
-        onArrivePoint?.Invoke(index);
+        moveCo = null;
     }
 }
