@@ -1,282 +1,164 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
-public class CableManager3D : MonoBehaviour {
+public class CableManager3D : MonoBehaviour
+{
     [Header("Line")]
     public Material lineMaterial;
-    public float lineWidth = 200f;            // 基本の太さ（開始地点の見た目に合わせたい太さ）
+    public float lineWidth = 200f;
 
     [Header("Raycast / Drag")]
     public LayerMask socketMask;
     public float rayMaxDistance = 100f;
     public float dragPlaneZ = 0f;
 
-    [Header("Feel (optional)")]
-    public bool smoothFollow = true;           // 先端が少し遅れて追従
-    public float smoothSpeed = 12f;            // 大きいほどキビキビ
-    public float maxDragLength = 0f;           // 0=無制限
-
     [Header("Snapping")]
-    public float snapDistance = 0.5f;          // 近ければ同色右ソケットへ自動スナップ
-    public bool  verboseLog   = true;          // 失敗理由のログ表示
+    public float snapDistance = 0.5f;
 
-    [Header("Thickness (screen-consistent)")]
-    public bool keepScreenThickness = true;    // 開始地点の見た目太さを維持する
-    public bool roundCaps = true;              // 丸キャップで太い線を綺麗に
+    [Header("MiniGame Exit")]
+    public MiniGameExit miniGameExit;
 
-    // ★追加：接続SE
-    [Header("SFX")]
-    public AudioSource connectAudio;           // ここにAudioSourceを入れる（未設定なら自分から探す）
-    public AudioClip connectClip;              // 接続SE
-    [Range(0f, 1f)] public float connectVolume = 1f;
-    public bool playAtPoint3D = false;         // trueなら接続地点で3D再生（AudioSource不要）
-
-    [System.Serializable]
-    public class Connection {
-        public CableSocket3D left, right;
-        public LineRenderer line;
-        public CableColor color;
-    }
-    public List<Connection> connections = new();
+    [Header("Clear Delay")]
+    public float clearDelay = 1.0f;
 
     Camera cam;
     CableSocket3D draggingFrom;
     LineRenderer draggingLine;
     Vector3 startPos;
-    Vector3 smoothedEnd;                       // 追従用
-    float referenceDistance = 1f;              // 開始地点〜カメラの距離（基準）
 
-    void Awake() {
-#if UNITY_2023_1_OR_NEWER
-        cam = Camera.main ?? Object.FindFirstObjectByType<Camera>();
-#else
-        cam = Camera.main ?? Object.FindObjectOfType<Camera>();
-#endif
-        if (socketMask == 0) socketMask = ~0; // 未設定なら全レイヤー
+    bool isClearing = false;   // ★ これが超重要
 
-        // ★追加：AudioSource自動取得（同じGameObjectについてる想定）
-        if (connectAudio == null) connectAudio = GetComponent<AudioSource>();
+    void Awake()
+    {
+        cam = Camera.main;
+        if (socketMask == 0) socketMask = ~0;
     }
 
-    void Update() {
-        // ドラッグ開始
-        if (Input.GetMouseButtonDown(0) && draggingFrom == null) {
+    void Update()
+    {
+        if (isClearing) return;
+
+        if (Input.GetMouseButtonDown(0) && draggingFrom == null)
+        {
             var s = RaycastSocket();
-            if (s && s.isLeftSide && !s.occupied) BeginDrag(s);
+            if (s && s.isLeftSide && !s.occupied)
+                BeginDrag(s);
         }
 
-        // ドラッグ中の更新（常に直線）
-        if (draggingLine) {
-            var target = MouseOnPlaneZ(dragPlaneZ);
-
-            // 長さ制限（任意）
-            if (maxDragLength > 0f) {
-                var v = target - startPos;
-                if (v.magnitude > maxDragLength) target = startPos + v.normalized * maxDragLength;
-            }
-
-            // 位置更新
-            Vector3 endPos;
-            if (smoothFollow) {
-                smoothedEnd = Vector3.Lerp(smoothedEnd, target, 1f - Mathf.Exp(-smoothSpeed * Time.deltaTime));
-                endPos = smoothedEnd;
-            } else {
-                endPos = target;
-            }
-            SetLine(draggingLine, startPos, endPos);
-
-            // 太さ補正（見た目の一貫性）
-            if (keepScreenThickness) UpdateLineWidthForScreen(draggingLine, startPos, endPos);
+        if (draggingLine)
+        {
+            Vector3 pos = MouseOnPlaneZ(dragPlaneZ);
+            SetLine(draggingLine, startPos, pos);
         }
 
-        // ドロップ確定
-        if (Input.GetMouseButtonUp(0) && draggingFrom != null) {
-            var hitSocket = RaycastSocket();
-            TryCompleteDrag(hitSocket);
+        if (Input.GetMouseButtonUp(0) && draggingFrom != null)
+        {
+            TryCompleteDrag(RaycastSocket());
         }
     }
 
-    CableSocket3D RaycastSocket() {
+    CableSocket3D RaycastSocket()
+    {
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         return Physics.Raycast(ray, out var hit, rayMaxDistance, socketMask)
-            ? hit.collider.GetComponent<CableSocket3D>() : null;
+            ? hit.collider.GetComponent<CableSocket3D>()
+            : null;
     }
 
-    Vector3 MouseOnPlaneZ(float z) {
+    Vector3 MouseOnPlaneZ(float z)
+    {
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         var plane = new Plane(Vector3.forward, new Vector3(0, 0, z));
-        return plane.Raycast(ray, out float t) ? ray.GetPoint(t) : startPos;
+        plane.Raycast(ray, out float t);
+        return ray.GetPoint(t);
     }
 
-    void BeginDrag(CableSocket3D from) {
+    void BeginDrag(CableSocket3D from)
+    {
         draggingFrom = from;
         startPos = from.transform.position;
 
-        draggingLine = NewLine(from.color.ToUnityColor()); // 線の色を確実に反映
-        SetLine(draggingLine, startPos, startPos);         // ゼロ長で開始
-        smoothedEnd = startPos;
-
-        // 開始地点のカメラ距離を「基準距離」に
-        referenceDistance = (cam.transform.position - startPos).magnitude;
-        if (referenceDistance < 0.001f) referenceDistance = 0.001f;
-
-        if (keepScreenThickness) {
-            // 開始直後も太さを適用
-            UpdateLineWidthForScreen(draggingLine, startPos, startPos);
-        }
+        draggingLine = NewLine(from.color.ToUnityColor());
+        SetLine(draggingLine, startPos, startPos);
     }
 
-    void TryCompleteDrag(CableSocket3D to) {
-        CableSocket3D final = to;
-
-        // 直接ヒットがなければ、近い同色の右ソケットを探してスナップ
-#if UNITY_2023_1_OR_NEWER
-        var sockets = Object.FindObjectsByType<CableSocket3D>(FindObjectsSortMode.None);
-#else
-        var sockets = Object.FindObjectsOfType<CableSocket3D>();
-#endif
-        if (final == null) {
-            float best = Mathf.Infinity;
-            Vector3 cursor = MouseOnPlaneZ(dragPlaneZ);
-            foreach (var s in sockets) {
-                if (s.isLeftSide || s.occupied || s.color != draggingFrom.color) continue;
-                float d = Vector3.Distance(s.transform.position, cursor);
-                if (d < best) { best = d; final = s; }
-            }
-            if (best > snapDistance) final = null; // 遠いならスナップしない
-        }
-
-        bool ok = (final && !final.isLeftSide && !final.occupied && final.color == draggingFrom.color);
-
-        if (ok) {
-            final.occupied = true;
+    void TryCompleteDrag(CableSocket3D to)
+    {
+        if (to && !to.isLeftSide && !to.occupied && to.color == draggingFrom.color)
+        {
+            to.occupied = true;
             draggingFrom.occupied = true;
 
-            // 右ソケット位置に直線で確定
-            SetLine(draggingLine, draggingFrom.transform.position, final.transform.position);
-
-            // 確定時も太さを最終更新
-            if (keepScreenThickness) UpdateLineWidthForScreen(draggingLine, draggingFrom.transform.position, final.transform.position);
-
-            connections.Add(new Connection {
-                left = draggingFrom, right = final, line = draggingLine, color = draggingFrom.color
-            });
-
-            if (verboseLog) Debug.Log($"✅ Connected {draggingFrom.color}: {draggingFrom.name} -> {final.name}");
-
-            // ★追加：接続確定の瞬間だけSE再生（ここで1回だけ鳴る）
-            PlayConnectSfx(final.transform.position);
+            SetLine(draggingLine,
+                draggingFrom.transform.position,
+                to.transform.position);
 
             CheckClear();
-        } else {
-            if (verboseLog) {
-                if (to == null) Debug.Log("❌ Drop miss: no socket under cursor");
-                else if (to.isLeftSide) Debug.Log("❌ Dropped on LEFT side (need RIGHT)");
-                else if (to.occupied) Debug.Log("❌ Dropped on occupied socket");
-                else if (to.color != draggingFrom.color) Debug.Log($"❌ Color mismatch: from {draggingFrom.color} -> {to.color}");
-            }
-            if (draggingLine) Destroy(draggingLine.gameObject);
+        }
+        else
+        {
+            Destroy(draggingLine.gameObject);
         }
 
         draggingFrom = null;
         draggingLine = null;
     }
 
-    void CheckClear() {
+    void CheckClear()
+    {
+        if (isClearing) return;
+
+        var sockets = FindObjectsOfType<CableSocket3D>();
         int goal = 0, ok = 0;
-#if UNITY_2023_1_OR_NEWER
-        var sockets = Object.FindObjectsByType<CableSocket3D>(FindObjectsSortMode.None);
-#else
-        var sockets = Object.FindObjectsOfType<CableSocket3D>();
-#endif
-        foreach (var s in sockets) {
-            if (!s.isLeftSide) { goal++; if (s.occupied) ok++; }
+
+        foreach (var s in sockets)
+        {
+            if (!s.isLeftSide)
+            {
+                goal++;
+                if (s.occupied) ok++;
+            }
         }
-        if (goal > 0 && ok == goal) {
-            Debug.Log("🎉 CLEAR (3D)!");
-            // GameManager.Instance?.WinOnce();
+
+        if (goal > 0 && ok == goal)
+        {
+            Debug.Log("🎉 CABLE CLEAR");
+
+            isClearing = true;
+            StartCoroutine(ClearAndExit());
         }
     }
 
-    LineRenderer NewLine(Color c) {
-        var go = new GameObject("Cable3D");
+    IEnumerator ClearAndExit()
+    {
+        yield return new WaitForSeconds(clearDelay);
+        MiniGameProgress.nextPointIndex++;
+
+        if (miniGameExit != null)
+            miniGameExit.OnClear();
+        else
+            Debug.LogWarning("MiniGameExit が設定されていません");
+    }
+
+    LineRenderer NewLine(Color c)
+    {
+        var go = new GameObject("Cable");
         var lr = go.AddComponent<LineRenderer>();
-        lr.positionCount = 2;                    // 直線
+        lr.positionCount = 2;
         lr.useWorldSpace = true;
-        lr.alignment = LineAlignment.View;       // カメラ向きで見やすく
         lr.widthMultiplier = lineWidth;
-        lr.numCornerVertices = roundCaps ? 6 : 0;
-        lr.numCapVertices    = roundCaps ? 6 : 0;
-        lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        lr.receiveShadows = false;
 
-        // ラインごとにマテリアルをインスタンス化し、確実に色を反映（URP/Built-in 両対応）
         var mat = new Material(lineMaterial);
-        if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", c);
-        else if (mat.HasProperty("_Color")) mat.SetColor("_Color", c);
+        if (mat.HasProperty("_Color")) mat.color = c;
         lr.material = mat;
-
-        // 頂点色も設定（シェーダが乗算する場合に備える）
-        lr.startColor = c;
-        lr.endColor   = c;
 
         return lr;
     }
 
-    void SetLine(LineRenderer lr, Vector3 a, Vector3 b) {
+    void SetLine(LineRenderer lr, Vector3 a, Vector3 b)
+    {
         lr.SetPosition(0, a);
         lr.SetPosition(1, b);
-    }
-
-    // 見かけの太さを開始地点基準で保つ（端ごとに距離補正）
-    void UpdateLineWidthForScreen(LineRenderer lr, Vector3 a, Vector3 b) {
-        // 端点ごとのカメラ距離
-        float d0 = (cam.transform.position - a).magnitude;
-        float d1 = (cam.transform.position - b).magnitude;
-
-        // 開始地点距離 : referenceDistance で規格化
-        float w0 = lineWidth * (d0 / referenceDistance);
-        float w1 = lineWidth * (d1 / referenceDistance);
-
-        // 端ごとに太さを設定（間は補間される）
-        lr.startWidth = w0;
-        lr.endWidth   = w1;
-    }
-
-    // ★追加：接続SE再生（okのときにだけ呼ばれる）
-    void PlayConnectSfx(Vector3 pos)
-    {
-        // どっちも無いなら何もしない
-        if (connectClip == null && connectAudio == null) return;
-
-        // 接続地点で3D再生したい場合（AudioSource不要）
-        if (playAtPoint3D && connectClip != null)
-        {
-            AudioSource.PlayClipAtPoint(connectClip, pos, connectVolume);
-            return;
-        }
-
-        // AudioSourceで再生（2D/3DどっちでもOK）
-        if (connectAudio == null) return;
-
-        if (connectClip != null)
-            connectAudio.PlayOneShot(connectClip, connectVolume);
-        else
-            connectAudio.Play();
-    }
-
-    public void ResetAll() {
-#if UNITY_2023_1_OR_NEWER
-        var sockets = Object.FindObjectsByType<CableSocket3D>(FindObjectsSortMode.None);
-#else
-        var sockets = Object.FindObjectsOfType<CableSocket3D>();
-#endif
-        foreach (var c in connections) if (c.line) Destroy(c.line.gameObject);
-        connections.Clear();
-        foreach (var s in sockets) s.occupied = false;
-
-        draggingFrom = null;
-        if (draggingLine) Destroy(draggingLine.gameObject);
-        draggingLine = null;
     }
 }
