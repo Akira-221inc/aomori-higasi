@@ -732,6 +732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserShooter
   lineRenderer: {fileID: 859240580}
+  explosionSE: {fileID: 8300000, guid: b831047af6d519349941fa2784c4f930, type: 3}
 --- !u!114 &1451498077
 MonoBehaviour:
   m_ObjectHideFlags: 0
