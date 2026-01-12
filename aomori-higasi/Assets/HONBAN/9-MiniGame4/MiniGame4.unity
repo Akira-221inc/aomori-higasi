@@ -1703,6 +1703,9 @@ MonoBehaviour:
   clickSE: {fileID: 8300000, guid: 7e22fbed0a6d2e54ba1ad6e62b69e7d8, type: 3}
   successSE: {fileID: 8300000, guid: 6df32cc0bba28954e91f5296240a2d66, type: 3}
   failSE: {fileID: 8300000, guid: 730ed4dbd49ac1c4cb2b7051d53520a7, type: 3}
+  clickSEVolume: 3
+  successSEVolume: 3
+  failSEVolume: 3
   nextSceneName: MainGame
   clearDelay: 1
 --- !u!82 &815055033
@@ -2634,6 +2637,7 @@ MonoBehaviour:
   animTime: 0.25
   audioSource: {fileID: 0}
   openSE: {fileID: 8300000, guid: 229d20dabe5316d4881820ddf69a3ea4, type: 3}
+  openSEVolume: 5
 --- !u!65 &1433492149
 BoxCollider:
   m_ObjectHideFlags: 0

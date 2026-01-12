@@ -19,6 +19,14 @@ public class CableManager3D : MonoBehaviour
     [Header("MiniGame Exit")]
     public MiniGameExit miniGameExit;
 
+    [Header("Sound")]
+    public AudioSource seSource;
+    public AudioClip connectSE;
+
+    [Range(0f, 10f)]
+    public float connectSEVolume = 1.0f; // 音量倍率（1が等倍）
+
+
     [Header("Clear Delay")]
     public float clearDelay = 1.0f;
 
@@ -93,6 +101,10 @@ public class CableManager3D : MonoBehaviour
             SetLine(draggingLine,
                 draggingFrom.transform.position,
                 to.transform.position);
+
+            // ★ 接続成功SE
+            if (seSource != null && connectSE != null)
+                seSource.PlayOneShot(connectSE, connectSEVolume);
 
             CheckClear();
         }

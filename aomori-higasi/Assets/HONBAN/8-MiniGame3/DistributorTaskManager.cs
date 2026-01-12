@@ -12,6 +12,12 @@ public class DistributorTaskManager : MonoBehaviour
     public AudioClip successSE;
     public AudioClip failSE;
 
+    [Header("Sound Settings")]
+    [Range(0f, 10f)]
+    public float successSEVolume = 1.0f; // 成功音の倍率
+    [Range(0f, 10f)]
+    public float failSEVolume = 1.0f;    // 失敗音の倍率
+
     [Header("MiniGame Exit")]
     public MiniGameExit miniGameExit;
 
@@ -51,8 +57,9 @@ public class DistributorTaskManager : MonoBehaviour
 
         if (success)
         {
+            // ★ 成功音（倍率付き）
             if (successSE != null)
-                audioSource.PlayOneShot(successSE);
+                audioSource.PlayOneShot(successSE, successSEVolume);
 
             if (currentIndex < lamps.Length)
                 lamps[currentIndex].SetSuccess();
@@ -76,8 +83,9 @@ public class DistributorTaskManager : MonoBehaviour
         }
         else
         {
+            // ★ 失敗音（倍率付き）
             if (failSE != null)
-                audioSource.PlayOneShot(failSE);
+                audioSource.PlayOneShot(failSE, failSEVolume);
         }
     }
 

@@ -677,19 +677,12 @@ MonoBehaviour:
     m_Bits: 0
   rayMaxDistance: 100
   dragPlaneZ: 0
-  smoothFollow: 1
-  smoothSpeed: 12
-  maxDragLength: 0
   snapDistance: 0.5
-  verboseLog: 1
-  keepScreenThickness: 1
-  roundCaps: 1
   miniGameExit: {fileID: 847725131}
-  connectAudio: {fileID: 0}
-  connectClip: {fileID: 8300000, guid: d34380650078c904086a062eb6ac6749, type: 3}
-  connectVolume: 1
-  playAtPoint3D: 0
-  connections: []
+  seSource: {fileID: 830299352}
+  connectSE: {fileID: 8300000, guid: d34380650078c904086a062eb6ac6749, type: 3}
+  connectSEVolume: 3
+  clearDelay: 1
 --- !u!4 &830299351
 Transform:
   m_ObjectHideFlags: 0

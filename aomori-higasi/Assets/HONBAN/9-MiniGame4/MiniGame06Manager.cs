@@ -13,6 +13,14 @@ public class MiniGame06Manager : MonoBehaviour
     public AudioClip successSE;
     public AudioClip failSE;
 
+    [Header("Sound Settings")]
+    [Range(0f, 10f)]
+    public float clickSEVolume = 1.0f;   // クリック音倍率
+    [Range(0f, 10f)]
+    public float successSEVolume = 1.0f; // 成功音倍率
+    [Range(0f, 10f)]
+    public float failSEVolume = 1.0f;    // 失敗音倍率
+
     [Header("Clear")]
     public string nextSceneName = "HubScene";
     public float clearDelay = 1.0f;
@@ -45,7 +53,7 @@ public class MiniGame06Manager : MonoBehaviour
                 var button = hit.collider.GetComponent<Button3D>();
                 if (button != null)
                 {
-                    PlaySE(clickSE);
+                    PlaySE(clickSE, clickSEVolume);
                     OnButtonPressed(button.type);
                 }
             }
@@ -97,13 +105,13 @@ public class MiniGame06Manager : MonoBehaviour
         if (medicines[index].medicineId == correctId)
         {
             Debug.Log("🎉 成功！");
-            PlaySE(successSE);
+            PlaySE(successSE, successSEVolume);
             GameClear();
         }
         else
         {
             Debug.Log("失敗");
-            PlaySE(failSE);
+            PlaySE(failSE, failSEVolume);
         }
     }
 
@@ -127,9 +135,10 @@ public class MiniGame06Manager : MonoBehaviour
         SceneManager.LoadScene(nextSceneName);
     }
 
-    void PlaySE(AudioClip clip)
+    // ★ 音量倍率付きで再生
+    void PlaySE(AudioClip clip, float volume = 1.0f)
     {
         if (clip != null)
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip, volume);
     }
 }
