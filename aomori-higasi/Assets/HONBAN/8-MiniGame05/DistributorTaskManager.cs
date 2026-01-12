@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DistributorTaskManager : MonoBehaviour
@@ -11,17 +12,22 @@ public class DistributorTaskManager : MonoBehaviour
     public AudioClip successSE;
     public AudioClip failSE;
 
+    [Header("MiniGame Exit")]
+    public MiniGameExit miniGameExit;
+
+    [Header("Clear Delay")]
+    public float clearDelay = 1.0f;   // ★ 戻るまでの待ち時間（秒）
+
     private AudioSource audioSource;
     private int currentIndex = 0;
+    private bool isClearing = false;  // ★ 多重実行防止
 
     void Start()
     {
         ActivateCurrentDial();
 
-        // AudioSource 取得
         audioSource = GetComponent<AudioSource>();
 
-        // 起動時は全ランプ通常色
         for (int i = 0; i < lamps.Length; i++)
         {
             lamps[i].SetNormal();
@@ -39,28 +45,29 @@ public class DistributorTaskManager : MonoBehaviour
     public void OnPress()
     {
         if (currentIndex >= dials.Length) return;
+        if (isClearing) return; // ★ クリア後は入力無効
 
         bool success = dials[currentIndex].CheckSuccess();
 
         if (success)
         {
-            // 🔊 成功音
             if (successSE != null)
-            {
                 audioSource.PlayOneShot(successSE);
-            }
 
-            // 💡 対応ランプを成功色
             if (currentIndex < lamps.Length)
-            {
                 lamps[currentIndex].SetSuccess();
-            }
 
             currentIndex++;
 
             if (currentIndex >= dials.Length)
             {
                 Debug.Log("TASK CLEAR!");
+
+                // ★ 次のカメラポイントへ進める
+                MiniGameProgress.nextPointIndex++;
+
+                isClearing = true;
+                StartCoroutine(ClearAndExit());
             }
             else
             {
@@ -69,11 +76,19 @@ public class DistributorTaskManager : MonoBehaviour
         }
         else
         {
-            // 🔊 失敗音
             if (failSE != null)
-            {
                 audioSource.PlayOneShot(failSE);
-            }
         }
+    }
+
+    IEnumerator ClearAndExit()
+    {
+        // ★ 1秒待つ
+        yield return new WaitForSeconds(clearDelay);
+
+        if (miniGameExit != null)
+            miniGameExit.OnClear();
+        else
+            Debug.LogWarning("MiniGameExit が設定されていません");
     }
 }
