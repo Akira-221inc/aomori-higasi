@@ -278,6 +278,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MovieEndController
   videoPlayer: {fileID: 1552340330}
   nextSceneName: End
+  targetCamera: {fileID: 2010805970}
+  blackTime: 1
 --- !u!328 &1552340330
 VideoPlayer:
   m_ObjectHideFlags: 0
@@ -286,7 +288,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552340328}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: cf973f0984c12e341948d742060bf043, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 86f36ebc9e1d82a44821585821d17883, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 2010805970}
