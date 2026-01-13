@@ -7488,6 +7488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OilGameManager
   fuelSlider: {fileID: 1736697530}
+  fuelSpeedMultiplier: 3
   nextSceneName: Result
   clearDelay: 1
 --- !u!4 &1657936528
