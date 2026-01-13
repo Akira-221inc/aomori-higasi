@@ -1052,7 +1052,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BGMManager
   stopBGMSenes:
   - Movie01
-  - Movie02
 --- !u!4 &1997894459
 Transform:
   m_ObjectHideFlags: 0
