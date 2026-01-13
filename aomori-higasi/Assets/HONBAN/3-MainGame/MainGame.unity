@@ -465,7 +465,7 @@ MonoBehaviour:
   - pointIndex: 1
     doorIndices: 000000000100000004000000
   - pointIndex: 5
-    doorIndices: 0200000003000000
+    doorIndices: 020000000300000005000000
   onArrivePoint:
     m_PersistentCalls:
       m_Calls: []
@@ -2721,6 +2721,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b42c2295dc238ca49aeb012a9220c602, type: 3}
+--- !u!4 &1301448062 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b42c2295dc238ca49aeb012a9220c602, type: 3}
+  m_PrefabInstance: {fileID: 1301448061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1349324359
 GameObject:
   m_ObjectHideFlags: 0
@@ -2780,6 +2785,13 @@ MonoBehaviour:
     isMoving: 0
     elapsed: 0
   - doorTransform: {fileID: 404099427}
+    moveDirection: {x: 0, y: 1, z: 0}
+    moveDistance: 0.5
+    moveDuration: 2
+    startPos: {x: 0, y: 0, z: 0}
+    isMoving: 0
+    elapsed: 0
+  - doorTransform: {fileID: 1301448062}
     moveDirection: {x: 0, y: 1, z: 0}
     moveDistance: 0.5
     moveDuration: 2
